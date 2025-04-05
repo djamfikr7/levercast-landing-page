@@ -1,36 +1,98 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Levercast Landing Page
 
-## Getting Started
+A modern landing page for Levercast with waitlist functionality integrated with Resend for email notifications.
 
-First, run the development server:
+## Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- Responsive design with dark mode support
+- Waitlist sign-up form
+- Email notifications via Resend
+- Built with Next.js and Tailwind CSS
+
+## Prerequisites
+
+- Node.js (v16+)
+- npm or yarn
+- [Resend](https://resend.com) account for email functionality
+
+## Local Development
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/djamfikr7/levercast-landing-page.git
+   cd levercast-landing-page
+   ```
+
+2. Install dependencies:
+   ```bash
+   npm install
+   # or
+   yarn
+   ```
+
+3. Set up environment variables:
+   - Create or update `.env` file with your Resend API key:
+     ```
+     RESEND_API_KEY=your_resend_api_key_here
+     ```
+   - You can get an API key by signing up at [Resend](https://resend.com)
+
+4. Configure email addresses:
+   - Open `app/api/send/route.ts`
+   - Update the email addresses in the `from` and `to` fields to match your requirements
+
+5. Start the development server:
+   ```bash
+   npm run dev
+   # or
+   yarn dev
+   ```
+
+6. Open [http://localhost:3000](http://localhost:3000) in your browser
+
+## Deployment to Vercel
+
+1. Push your changes to GitHub
+2. Connect your repository to Vercel
+3. Add your `RESEND_API_KEY` as an environment variable in Vercel
+4. Deploy!
+
+## Customization
+
+### Colors
+
+Edit the color variables in `app/globals.css` to match your brand:
+
+```css
+:root {
+  --primary: #f59e0b; /* Main brand color */
+  --primary-dark: #d97706; /* Darker shade for hover states */
+}
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Content
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Update the copy and messaging in `app/page.tsx` to match your product offering.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Directory Structure
 
-## Learn More
+- `app/` - Main application code
+  - `page.tsx` - Landing page component
+  - `globals.css` - Global styles
+  - `layout.tsx` - Root layout component
+  - `api/` - API routes
+    - `send/` - Email submission API
+- `public/` - Static assets
+- `docs/` - Additional documentation
 
-To learn more about Next.js, take a look at the following resources:
+## Troubleshooting
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Email Not Sending
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+1. Verify your Resend API key is correctly set in the `.env` file
+2. Make sure the domain in your email addresses is verified in your Resend account
+3. Check the console logs for detailed error messages
 
-## Deploy on Vercel
+## License
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+[MIT](LICENSE)
