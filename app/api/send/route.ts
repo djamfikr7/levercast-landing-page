@@ -7,6 +7,9 @@ const resendApiKey = process.env.RESEND_API_KEY;
 // Add validation for API key being set properly
 const resend = new Resend(resendApiKey);
 
+// Your own email for testing purposes
+const OWNER_EMAIL = 'djamfikr7@gmail.com';
+
 export async function POST(request: NextRequest) {
   try {
     // Check if the API key is properly set
@@ -29,21 +32,21 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Send email using Resend
-    const { data, error } = await resend.emails.send({
+    // Store the user's email for confirmation on the frontend
+    const userEmail = email;
+
+    // In test mode, we can only send to the account owner's email
+    // This is a limitation of Resend until a domain is verified
+    const { error } = await resend.emails.send({
       from: 'Levercast Waitlist <onboarding@resend.dev>',
-      to: email, // Send notification to the user's email instead
+      to: OWNER_EMAIL, // Send to your own email in test mode
       subject: 'New Waitlist Signup',
-      text: `Thank you for joining the Levercast waitlist! We'll keep you updated on our progress.`,
+      text: `New signup to Levercast waitlist: ${userEmail}`,
       html: `
-        <h1>Welcome to the Levercast Waitlist!</h1>
-        <p>Thank you for your interest in Levercast.</p>
-        <p>We're working hard to build a platform that helps B2B companies leverage customer conversations into actionable product insights.</p>
-        <p>We'll keep you updated on our progress and let you know when we're ready to launch!</p>
-        <p>
-        <br>
-        The Levercast Team
-        </p>
+        <h1>New Waitlist Signup</h1>
+        <p>Someone has joined the Levercast waitlist!</p>
+        <p><strong>Email:</strong> ${userEmail}</p>
+        <p>Note: In test mode, confirmation emails aren't sent to users.</p>
       `,
     });
 
@@ -54,7 +57,12 @@ export async function POST(request: NextRequest) {
       }, { status: 500 });
     }
 
-    return NextResponse.json({ success: true, data });
+    // Return success even though we couldn't send to the actual user
+    // In production with a verified domain, you would modify this to send to the user
+    return NextResponse.json({ 
+      success: true, 
+      message: "You've been added to the waitlist! Note: In test mode, confirmation emails can only be sent to the account owner."
+    });
   } catch (error: unknown) {
     console.error('Error sending email:', error);
     const errorMessage = error instanceof Error ? error.message : 'Failed to send email. Please try again.';

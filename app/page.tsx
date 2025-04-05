@@ -23,11 +23,12 @@ export default function Home() {
         body: JSON.stringify({ email }),
       });
 
+      const data = await response.json();
+      
       if (response.ok) {
         setIsSuccess(true);
         setEmail("");
       } else {
-        const data = await response.json();
         throw new Error(data.error || "Something went wrong");
       }
     } catch (error: any) {
